@@ -1,3 +1,3 @@
-import HelloWorld from "./HelloWorld.vue";
+import VueTable from "./VueTable.vue";
 
-export { HelloWorld };
+export { VueTable };
