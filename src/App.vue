@@ -1,6 +1,8 @@
 <template>
   <VueTable :fields="fields" :items="items">
-    <template #cell(surname)="{ data }"> {{ data }} is my surname </template>
+    <template #cell(website)="{ item }">
+      <a :href="item.website">{{ item.firstname }} {{ item.surname }}</a>
+    </template>
   </VueTable>
 </template>
 
@@ -11,10 +13,12 @@ const items = [
   {
     firstname: "Steve",
     surname: "Job",
+    website: "https://www.apple.com/",
   },
   {
     firstname: "Michael",
     surname: "Smith",
+    website: "https://www.apple.com/",
   },
 ];
 const fields = [
@@ -25,6 +29,10 @@ const fields = [
   {
     key: "surname",
     value: "Last name",
+  },
+  {
+    key: "website",
+    value: "Website",
   },
 ];
 </script>
