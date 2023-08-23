@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table ref="vueTableRef">
     <tr>
       <th v-for="heading of fields">
         <slot
@@ -28,28 +28,125 @@
 
 <script setup lang="ts" generic="T extends Record<string, any>">
 import { onMounted, ref } from "vue";
-import { VueTableProps } from "./VueTable.types";
+import { FocusableCell, VueTableProps } from "./VueTable.types";
+import {
+  create2dArrayOfFocusableElements,
+  getAllFocusableElements,
+  removeTabIndexFromFocusableElements,
+  flattenArray,
+  getFirstNonNullValue,
+} from "../utilities/helpers";
 
 const { fields, items } = defineProps<VueTableProps<T>>();
+
+const vueTableRef = ref();
+
+const focusableElements = ref<FocusableCell[][]>([]);
+
+const currentSelection = ref<FocusableCell | null>(null);
 
 onMounted(() => {
   initRovingTabIndex();
 });
 
-const initRovingTabIndex = () => {
-  // Get all focusable elements
-  // Save in 2d array
+const removeAllTabIndex = () => {
+  const table = vueTableRef.value;
+
+  const focusableElementsFlat = getAllFocusableElements(table);
+
   // Remove tabindex from all
-  // Apply tabindex to first element
-  // Add keyhandler to first element
+  removeTabIndexFromFocusableElements(focusableElementsFlat);
+
+  // Remove keydown handler
+  focusableElementsFlat.forEach((element) => {
+    element.removeEventListener("keydown", applyEventHandler);
+  });
 };
 
-const keyHandler = () => {
+const initRovingTabIndex = () => {
+  const table = vueTableRef.value;
+
+  // Get all focusable elements
+  // Save in 2d array
+  focusableElements.value = create2dArrayOfFocusableElements(table);
+  console.log({ focusableElements });
+
+  // const focusableElementsFlat = getAllFocusableElements(table);
+  removeAllTabIndex();
+  // // Remove tabindex from all
+  // removeTabIndexFromFocusableElements(focusableElementsFlat);
+
+  // Apply tabindex to first element
+  // Add keyhandler to first element
+  if (focusableElements.value.length) {
+    currentSelection.value = getFirstNonNullValue(focusableElements.value);
+    keyHandler(currentSelection.value as FocusableCell);
+  }
+};
+
+const applyEventHandler = (event: KeyboardEvent) => {
+  if (!currentSelection.value) {
+    return; // No cell selected
+  }
+  const ArrowKeys = {
+    Left: "ArrowLeft",
+    Right: "ArrowRight",
+    Up: "ArrowUp",
+    Down: "ArrowDown",
+  };
+
+  const { row, column } = currentSelection.value;
+
+  let newRow = row;
+  let newColumn = column;
+  switch (event.key) {
+    case ArrowKeys.Left:
+      newColumn -= 1;
+      break;
+    case ArrowKeys.Right:
+      newColumn += 1;
+      break;
+    case ArrowKeys.Up:
+      newRow -= 1;
+      break;
+    case ArrowKeys.Down:
+      newRow += 1;
+      break;
+    default:
+      return; // Not an arrow key
+  }
+
+  if (newRow >= 0 && newRow < focusableElements.value.length) {
+    const newCell = focusableElements.value[newRow].find((el) => {
+      return el.column == newColumn;
+    });
+    if (newCell) {
+      currentSelection.value = newCell;
+      keyHandler(newCell);
+    }
+    // The new cell is within bounds
+    // const newCell = focusableElements.value[newRow][newColumn];
+    // Do something with the new cell, like updating the focus
+    // console.log(newCell.element, newRow, newColumn);
+    // keyHandler(newCell);
+  } else {
+    // The new cell is out of bounds
+    // Handle accordingly, e.g., don't move focus or show an error message
+  }
+};
+
+const keyHandler = (cell: FocusableCell) => {
+  removeAllTabIndex();
+
+  cell.element.setAttribute("tabindex", "0");
+  cell.element.focus();
   // Handle up down left right arrow keys
   // Check key
   // Check if first or last of row or column
   // Remove keyhandler from current element
   // Apply keyhandler to new element
+  // applyEventHandler(cell);
+  cell.element.addEventListener("keydown", applyEventHandler);
 };
 </script>
 
