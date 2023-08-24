@@ -33,7 +33,6 @@ export const create2dArrayOfFocusableElements = (table: HTMLTableElement) => {
 };
 
 export const removeTabIndexFromFocusableElements = (elements: Element[]) => {
-  // const elements = getAllFocusableElements(table);
   for (const element of elements) {
     element.setAttribute("tabindex", "-1");
   }
