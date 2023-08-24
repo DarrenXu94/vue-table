@@ -1,5 +1,5 @@
 {
-  "name": "vue-table",
+  "name": "vue-table-accessible",
   "version": "0.0.3",
   "scripts": {
     "dev": "vite",
