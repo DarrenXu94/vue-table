@@ -12,13 +12,13 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/vue-table.es.js",
-      "require": "./dist/vue-table.umd.js"
+      "import": "./dist/vue-table-accessible.es.js",
+      "require": "./dist/vue-table-accessible.umd.js"
     },
     "./dist/style.css": "./dist/style.css"
   },
-  "main": "./dist/vue-table.umd.js",
-  "module": "./dist/vue-table.es.js",
+  "main": "./dist/vue-table-accessible.umd.js",
+  "module": "./dist/vue-table-accessible.es.js",
   "types": "./dist/components/index.d.ts",
   "dependencies": {
     "vite-plugin-dts": "^3.5.2",

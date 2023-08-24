@@ -19,7 +19,7 @@ export default defineConfig({
       entry: resolve("src", "components/index.ts"),
       name: "VueTable",
       formats: ["es", "umd"],
-      fileName: (format) => `vue-table.${format}.js`,
+      fileName: (format) => `vue-table-accessible.${format}.js`,
     },
     rollupOptions: {
       external: [...Object.keys(packageJson.peerDependencies)],

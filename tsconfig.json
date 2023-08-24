@@ -18,7 +18,7 @@
     "declarationMap": true,
     "baseUrl": ".",
     "paths": {
-      "vue-table": ["src/component/index.ts"]
+      "vue-table-accessible": ["src/component/index.ts"]
     }
   },
   "include": ["src"]

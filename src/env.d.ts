@@ -7,4 +7,4 @@ declare module "*.vue" {
   export default component;
 }
 
-declare module "vue-table";
+declare module "vue-table-accessible";
