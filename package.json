@@ -1,6 +1,6 @@
 {
   "name": "vue-table-accessible",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -20,7 +20,6 @@
   "main": "./dist/vue-table-accessible.umd.js",
   "module": "./dist/vue-table-accessible.es.js",
   "types": "./dist/components/index.d.ts",
- 
   "peerDependencies": {
     "vue": "^3.2.25"
   },
@@ -36,5 +35,4 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/DarrenXu94/vue-table"
-
 }
