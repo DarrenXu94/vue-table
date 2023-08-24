@@ -19,10 +19,12 @@
   },
   "main": "./dist/vue-table.umd.js",
   "module": "./dist/vue-table.es.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/components/index.d.ts",
   "dependencies": {
     "vite-plugin-dts": "^3.5.2",
-    "vite-tsconfig-paths": "^4.2.0",
+    "vite-tsconfig-paths": "^4.2.0"
+  },
+  "peerDependencies": {
     "vue": "^3.2.25"
   },
   "devDependencies": {

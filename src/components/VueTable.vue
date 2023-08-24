@@ -33,7 +33,6 @@ import {
   create2dArrayOfFocusableElements,
   getAllFocusableElements,
   removeTabIndexFromFocusableElements,
-  flattenArray,
   getFirstNonNullValue,
 } from "../utilities/helpers";
 
@@ -124,14 +123,6 @@ const applyEventHandler = (event: KeyboardEvent) => {
       currentSelection.value = newCell;
       keyHandler(newCell);
     }
-    // The new cell is within bounds
-    // const newCell = focusableElements.value[newRow][newColumn];
-    // Do something with the new cell, like updating the focus
-    // console.log(newCell.element, newRow, newColumn);
-    // keyHandler(newCell);
-  } else {
-    // The new cell is out of bounds
-    // Handle accordingly, e.g., don't move focus or show an error message
   }
 };
 
@@ -140,12 +131,6 @@ const keyHandler = (cell: FocusableCell) => {
 
   cell.element.setAttribute("tabindex", "0");
   cell.element.focus();
-  // Handle up down left right arrow keys
-  // Check key
-  // Check if first or last of row or column
-  // Remove keyhandler from current element
-  // Apply keyhandler to new element
-  // applyEventHandler(cell);
   cell.element.addEventListener("keydown", applyEventHandler);
 };
 </script>

@@ -21,8 +21,8 @@ export default defineConfig({
       formats: ["es", "umd"],
       fileName: (format) => `vue-table.${format}.js`,
     },
-    // rollupOptions: {
-    //   external: [...Object.keys(packageJson.peerDependencies)],
-    // },
+    rollupOptions: {
+      external: [...Object.keys(packageJson.peerDependencies)],
+    },
   },
 });

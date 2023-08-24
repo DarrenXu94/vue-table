@@ -1,5 +1,5 @@
 <template>
-  <button>test before</button>
+  <button>Focusable element before</button>
   <VueTable :fields="fields" :items="items">
     <template #cell(website)="{ item }">
       <a :href="item.website">{{ item.firstname }} {{ item.surname }}</a>
@@ -9,7 +9,7 @@
       <!-- <a v-if="item.optionalLink" :href="item.optionalLink">Optional 2</a> -->
     </template>
   </VueTable>
-  <button>test after</button>
+  <button>Focusable element after</button>
 </template>
 
 <script setup lang="ts">
