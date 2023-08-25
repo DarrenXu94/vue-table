@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "type": "module",
   "files": [
@@ -20,21 +22,20 @@
   "main": "./dist/vue-table-accessible.umd.js",
   "module": "./dist/vue-table-accessible.es.js",
   "types": "./dist/components/index.d.ts",
- 
   "peerDependencies": {
     "vue": "^3.2.25"
   },
   "devDependencies": {
-    "vite-plugin-dts": "^3.5.2",
-    "vite-tsconfig-paths": "^4.2.0",
-    "vue": "^3.2.25",
     "@types/node": "^20.5.1",
     "@vitejs/plugin-vue": "^2.0.0",
     "typescript": "^4.9.5",
     "vite": "^2.7.2",
+    "vite-plugin-dts": "^3.5.2",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vitepress": "^1.0.0-rc.4",
+    "vue": "^3.2.25",
     "vue-tsc": "^0.29.8"
   },
   "license": "MIT",
   "homepage": "https://github.com/DarrenXu94/vue-table"
-
 }
