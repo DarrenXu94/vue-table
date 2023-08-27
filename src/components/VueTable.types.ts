@@ -4,6 +4,13 @@ export interface Field {
 }
 
 export interface VueTableProps<T> {
+  /**
+   * Array of type Field 
+   * {
+      key: string;
+      value: string;
+    }
+   */
   fields: Field[];
   items: T[];
 }

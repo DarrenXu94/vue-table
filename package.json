@@ -6,7 +6,8 @@
     "build": "tsc && vite build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "docgen": "vue-docgen src/components/**/*.vue docs/components"
   },
   "type": "module",
   "files": [
@@ -34,6 +35,7 @@
     "vite-tsconfig-paths": "^4.2.0",
     "vitepress": "^1.0.0-rc.4",
     "vue": "^3.2.25",
+    "vue-docgen-cli": "^4.67.0",
     "vue-tsc": "^0.29.8"
   },
   "license": "MIT",

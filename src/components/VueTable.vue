@@ -2,6 +2,10 @@
   <table ref="vueTableRef">
     <tr>
       <th v-for="heading of fields">
+        <!-- @slot header(cellname)
+              @binding {object} data whole header item
+              @binding {string} header key for the header
+        -->
         <slot
           :name="`header(${heading.key})`"
           v-bind:data="heading"
@@ -13,6 +17,10 @@
     </tr>
     <tr v-for="item of items">
       <td v-for="heading of fields">
+        <!-- @slot cell(cellname)
+              @binding {object} data Key value
+              @binding {string} item Whole data item
+        -->
         <slot
           :name="`cell(${heading.key})`"
           v-bind:data="item[heading.key]"
@@ -22,6 +30,8 @@
         </slot>
       </td>
     </tr>
+    <!-- @slot Use this slot for table footer -->
+
     <slot name="tfooter"> </slot>
   </table>
 </template>
