@@ -83,7 +83,7 @@ const initRovingTabIndex = () => {
   focusableElements.value = create2dArrayOfFocusableElements(table);
 
   // const focusableElementsFlat = getAllFocusableElements(table);
-  removeAllTabIndex();
+  // removeAllTabIndex();
   // // Remove tabindex from all
   // removeTabIndexFromFocusableElements(focusableElementsFlat);
 
@@ -95,21 +95,21 @@ const initRovingTabIndex = () => {
   }
 };
 
-const applyEventHandler = (event: KeyboardEvent) => {
-  if (!currentSelection.value) {
-    return; // No cell selected
-  }
-  const ArrowKeys = {
-    Left: "ArrowLeft",
-    Right: "ArrowRight",
-    Up: "ArrowUp",
-    Down: "ArrowDown",
-  };
+const ArrowKeys = {
+  Left: "ArrowLeft",
+  Right: "ArrowRight",
+  Up: "ArrowUp",
+  Down: "ArrowDown",
+};
 
-  const { row, column } = currentSelection.value;
-
+const recursivelyFindNextCell = (
+  row: number,
+  column: number,
+  event: KeyboardEvent
+): FocusableCell | undefined => {
   let newRow = row;
   let newColumn = column;
+  console.log(row, column, event.key);
   switch (event.key) {
     case ArrowKeys.Left:
       newColumn -= 1;
@@ -127,18 +127,69 @@ const applyEventHandler = (event: KeyboardEvent) => {
       return; // Not an arrow key
   }
 
-  if (newRow >= 0 && newRow < focusableElements.value.length) {
+  if (
+    newRow >= 0 &&
+    newRow < focusableElements.value.length &&
+    newColumn >= 0 &&
+    newColumn <=
+      focusableElements.value[newRow][
+        focusableElements.value[newRow].length - 1
+      ].column
+  ) {
     const newCell = focusableElements.value[newRow].find((el) => {
       return el.column == newColumn;
     });
-    if (newCell) {
-      currentSelection.value = newCell;
-      keyHandler(newCell);
-    }
+    if (newCell) return newCell;
+    return recursivelyFindNextCell(newRow, newColumn, event);
   }
 };
 
+const applyEventHandler = (event: KeyboardEvent) => {
+  if (!currentSelection.value) {
+    return; // No cell selected
+  }
+  const { row, column } = currentSelection.value;
+
+  const newCell = recursivelyFindNextCell(row, column, event);
+  if (newCell) {
+    currentSelection.value = newCell;
+    keyHandler(newCell);
+  }
+
+  // let newRow = row;
+  // let newColumn = column;
+  // switch (event.key) {
+  //   case ArrowKeys.Left:
+  //     newColumn -= 1;
+  //     break;
+  //   case ArrowKeys.Right:
+  //     newColumn += 1;
+  //     break;
+  //   case ArrowKeys.Up:
+  //     newRow -= 1;
+  //     break;
+  //   case ArrowKeys.Down:
+  //     newRow += 1;
+  //     break;
+  //   default:
+  //     return; // Not an arrow key
+  // }
+
+  // Need to recursively do this till u either hit the end or find an item
+
+  // if (newRow >= 0 && newRow < focusableElements.value.length) {
+  //   const newCell = focusableElements.value[newRow].find((el) => {
+  //     return el.column == newColumn;
+  //   });
+  //   if (newCell) {
+  //     currentSelection.value = newCell;
+  //     keyHandler(newCell);
+  //   }
+  // }
+};
+
 const keyHandler = (cell: FocusableCell) => {
+  console.log("key handler applied", cell);
   removeAllTabIndex();
 
   cell.element.setAttribute("tabindex", "0");
