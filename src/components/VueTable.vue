@@ -74,11 +74,13 @@ const removeAllTabIndex = () => {
 
 const initRovingTabIndex = () => {
   const table = vueTableRef.value;
+  const focusableElementsFlat = getAllFocusableElements(table);
+
+  if (!focusableElementsFlat.length) return;
 
   // Get all focusable elements
   // Save in 2d array
   focusableElements.value = create2dArrayOfFocusableElements(table);
-  console.log({ focusableElements });
 
   // const focusableElementsFlat = getAllFocusableElements(table);
   removeAllTabIndex();
