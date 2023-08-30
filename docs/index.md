@@ -22,7 +22,7 @@ A Dynamic and Accessible Vue Table Component for Every Project.
 
 ## What is the problem we are trying to solve?
 
-Trying using your keyboard to navigate to the next page
+Try using your keyboard to navigate to the next page
 
 <script setup>
 import BasicNoRoving from '../src/examples/BasicNoRoving.vue'

@@ -15,8 +15,8 @@
         </slot>
       </th>
     </tr>
-    <tr v-for="item of items">
-      <td v-for="heading of fields">
+    <tr v-for="(item, index) of items">
+      <td v-for="(heading, columnIndex) of fields">
         <!-- @slot cell(cellname)
               @binding {object} data Key value
               @binding {string} item Whole data item
@@ -25,6 +25,8 @@
           :name="`cell(${heading.key})`"
           v-bind:data="item[heading.key]"
           v-bind:item="item"
+          v-bind:row="index"
+          v-bind:column="columnIndex"
         >
           {{ item[heading.key] }}
         </slot>
@@ -109,38 +111,55 @@ const recursivelyFindNextCell = (
 ): FocusableCell | undefined => {
   let newRow = row;
   let newColumn = column;
-  console.log(row, column, event.key);
-  switch (event.key) {
-    case ArrowKeys.Left:
-      newColumn -= 1;
-      break;
-    case ArrowKeys.Right:
-      newColumn += 1;
-      break;
-    case ArrowKeys.Up:
+  // console.log(row, column, event.key);
+  if (event.key === ArrowKeys.Up || event.key === ArrowKeys.Down) {
+    if (event.key === ArrowKeys.Up) {
       newRow -= 1;
-      break;
-    case ArrowKeys.Down:
+    } else if (event.key === ArrowKeys.Down) {
       newRow += 1;
-      break;
-    default:
-      return; // Not an arrow key
-  }
+    }
 
-  if (
-    newRow >= 0 &&
-    newRow < focusableElements.value.length &&
-    newColumn >= 0 &&
-    newColumn <=
-      focusableElements.value[newRow][
-        focusableElements.value[newRow].length - 1
-      ].column
-  ) {
-    const newCell = focusableElements.value[newRow].find((el) => {
-      return el.column == newColumn;
-    });
-    if (newCell) return newCell;
-    return recursivelyFindNextCell(newRow, newColumn, event);
+    if (newRow >= 0 && newRow < focusableElements.value.length) {
+      // See if cell exists directly under
+      const newCell = focusableElements.value[newRow].find((el) => {
+        return el.column == newColumn;
+      });
+      if (newCell) return newCell;
+      // Find closest in row
+      const closest = focusableElements.value[newRow].reduce(function (
+        prev,
+        curr
+      ) {
+        return Math.abs(curr.column - newColumn) <
+          Math.abs(prev.column - newColumn)
+          ? curr
+          : prev;
+      });
+      if (closest) return closest;
+
+      // If the row was empty check next row
+      return recursivelyFindNextCell(newRow, newColumn, event);
+    }
+  } else if (event.key === ArrowKeys.Left || event.key === ArrowKeys.Right) {
+    if (event.key === ArrowKeys.Left) {
+      newColumn -= 1;
+    } else if (event.key === ArrowKeys.Right) {
+      newColumn += 1;
+    }
+
+    if (
+      newColumn >= 0 &&
+      newColumn <=
+        focusableElements.value[newRow][
+          focusableElements.value[newRow].length - 1
+        ].column
+    ) {
+      const newCell = focusableElements.value[newRow].find((el) => {
+        return el.column == newColumn;
+      });
+      if (newCell) return newCell;
+      return recursivelyFindNextCell(newRow, newColumn, event);
+    }
   }
 };
 
@@ -155,37 +174,6 @@ const applyEventHandler = (event: KeyboardEvent) => {
     currentSelection.value = newCell;
     keyHandler(newCell);
   }
-
-  // let newRow = row;
-  // let newColumn = column;
-  // switch (event.key) {
-  //   case ArrowKeys.Left:
-  //     newColumn -= 1;
-  //     break;
-  //   case ArrowKeys.Right:
-  //     newColumn += 1;
-  //     break;
-  //   case ArrowKeys.Up:
-  //     newRow -= 1;
-  //     break;
-  //   case ArrowKeys.Down:
-  //     newRow += 1;
-  //     break;
-  //   default:
-  //     return; // Not an arrow key
-  // }
-
-  // Need to recursively do this till u either hit the end or find an item
-
-  // if (newRow >= 0 && newRow < focusableElements.value.length) {
-  //   const newCell = focusableElements.value[newRow].find((el) => {
-  //     return el.column == newColumn;
-  //   });
-  //   if (newCell) {
-  //     currentSelection.value = newCell;
-  //     keyHandler(newCell);
-  //   }
-  // }
 };
 
 const keyHandler = (cell: FocusableCell) => {
