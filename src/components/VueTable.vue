@@ -84,16 +84,11 @@ const initRovingTabIndex = () => {
   // Save in 2d array
   focusableElements.value = create2dArrayOfFocusableElements(table);
 
-  // const focusableElementsFlat = getAllFocusableElements(table);
-  // removeAllTabIndex();
-  // // Remove tabindex from all
-  // removeTabIndexFromFocusableElements(focusableElementsFlat);
-
   // Apply tabindex to first element
   // Add keyhandler to first element
   if (focusableElements.value.length) {
     currentSelection.value = getFirstNonNullValue(focusableElements.value);
-    keyHandler(currentSelection.value as FocusableCell);
+    keyHandler(currentSelection.value as FocusableCell, true);
   }
 };
 
@@ -176,12 +171,13 @@ const applyEventHandler = (event: KeyboardEvent) => {
   }
 };
 
-const keyHandler = (cell: FocusableCell) => {
-  console.log("key handler applied", cell);
+const keyHandler = (cell: FocusableCell, skipFocus = false) => {
   removeAllTabIndex();
 
   cell.element.setAttribute("tabindex", "0");
-  cell.element.focus();
+  if (!skipFocus) {
+    cell.element.focus();
+  }
   cell.element.addEventListener("keydown", applyEventHandler);
 };
 </script>
