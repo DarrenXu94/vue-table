@@ -1,8 +1,14 @@
 ---
+title: Docs for Table
+
 outline: deep
+pageClass: custom-page-class
+
 ---
 
-# Component
+# Docs for Table
+
+Insert example code here
 
 <script setup>
 import App from '../src/App.vue'
@@ -10,6 +16,10 @@ import App from '../src/App.vue'
 
 
 <App />
+
+:::details Code block
+<<<../src/App.vue
+:::
 
 
 <!--@include: components/src/components/VueTable.md-->
